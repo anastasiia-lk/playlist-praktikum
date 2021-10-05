@@ -10,3 +10,13 @@ if (songs.length === 0) {
   resetButton.classList.remove('form__submit-btn_disabled');
   resetButton.removeAttribute('disabled');
 }
+function addSong (songsContainer){
+  songsContainer.innerHTML+=`<div class="song">
+    <h4 class="song__artist">Кино</h4>
+    <p class="song__title">Дерево</p>
+    <button class="song__like"></button>
+</div>`;
+};
+addSong(songsContainer);
+addSong(songsContainer);
+addSong(songsContainer);
