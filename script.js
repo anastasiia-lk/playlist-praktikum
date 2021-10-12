@@ -49,5 +49,9 @@ addButton.addEventListener('click', function () {
 resetButton.addEventListener('click', function () {
   const songs = document.querySelectorAll('.song');
   
-  // for ...
+  for (let i=0; i<songs.length; i++){
+    songs[i].remove(); 
+  }
+  
+  renderNoSongs();
 });
