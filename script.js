@@ -1,51 +1,37 @@
-const container = document.querySelector('.container');
-const songsContainer = container.querySelector('.songs-container');
-const addButton = container.querySelector('.input__btn_action_add');
-const resetButton = container.querySelector('.input__btn_action_reset');
-const noSongsElement = container.querySelector('.no-songs');
-
-function renderHasSongs() {
-  resetButton.removeAttribute('disabled');
-  resetButton.classList.remove('input__btn_disabled');
-  noSongsElement.classList.add('no-songs_hidden');
-}
-
-function renderNoSongs() {
-  resetButton.setAttribute('disabled', true);
-  resetButton.classList.add('input__btn_disabled');
-  noSongsElement.classList.remove('no-songs_hidden');
-}
+const songsContainer = document.querySelector('.songs-container');
+const addButton = document.querySelector('.input__btn_action_add');
+const form = document.forms.add;
+const artist = form.elements.artist;
+const title = form.elements.title;
 
 function addSong(artistValue, titleValue) {
   const songTemplate = document.querySelector('#song-template').content;
-  const songElement = songTemplate.querySelector('.song').cloneNode(true);
+  const songElement = songTemplate.cloneNode(true);
+
   songElement.querySelector('.song__artist').textContent = artistValue;
   songElement.querySelector('.song__title').textContent = titleValue;
-  // добавьте songElement название песни
-  songElement.querySelector('.song__like').addEventListener('click', function (evt) {
-  const eventTarget = evt.target;
-  eventTarget.classList.toggle('song__like_active');
-});
-  songsContainer.append(songElement); 
+
+  songsContainer.append(songElement);
 }
 
-addButton.addEventListener('click', function () {
-  const artist = document.querySelector('.input__text_type_artist');
-  const title = document.querySelector('.input__text_type_title');
+function setSubmitButtonState(isFormValid) {
+  if (isFormValid) {
+    addButton.removeAttribute('disabled');
+    addButton.classList.remove('input__btn_disabled');
+  } else {
+    addButton.setAttribute('disabled', true);
+    addButton.classList.add('input__btn_disabled');
+  }
+}
 
+form.addEventListener('submit', function (evt) {
+  evt.preventDefault();
   addSong(artist.value, title.value);
-  renderHasSongs();
-
-  artist.value = '';
-  title.value = '';
+  form.reset();
+  setSubmitButtonState(false);
 });
 
-resetButton.addEventListener('click', function () {
-  const songs = document.querySelectorAll('.song')
-
-  for (let i = 0; i < songs.length; i++) {
-    songs[i].remove();
-  }
-
-  renderNoSongs();
+form.addEventListener('input', function (evt) {
+  const isValid = artist.value.length > 0 && title.value.length > 0;
+  setSubmitButtonState(isValid);
 });
